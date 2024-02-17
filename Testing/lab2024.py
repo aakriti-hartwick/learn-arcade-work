@@ -6,21 +6,32 @@ this is an example of program that is used for drawing from arcade
 
 import arcade
 
-arcade.open_window(600,600,'lab for happy world')
+arcade.open_window(900,900,'lab for happy world')
 
-arcade.set_background_color(arcade.csscolor.AQUAMARINE)
+arcade.set_background_color(arcade.csscolor.FLORAL_WHITE)
 
 arcade.start_render()
-# Tree trunk
-# Center of 100, 320
-# Width of 20
-# Height of 60
-arcade.draw_rectangle_filled(300, 300, 80, 80, arcade.csscolor.SIENNA)
-arcade.draw_rectangle_filled(300,300,40,40,arcade.csscolor.PINK)
+
+
+#Draw a rectangle
+#left of 0, right of 899
+#top of 450, bottom of 0
+arcade.draw_lrtb_rectangle_filled(0,899,450,0,arcade.csscolor.DARK_GREEN)
+
+#draw a sun
+arcade.draw_circle_filled(800,850,40,arcade.csscolor.YELLOW)
+#draw a pentagon
+arcade.draw_polygon_filled
+
+
+
+
+
+
 
 # Tree top
-arcade.draw_circle_filled(100, 350, 30, arcade.csscolor.DARK_GREEN)
-arcade.draw_circle_filled(100,350,15,arcade.csscolor.ORANGE)
+
+
 
 
 arcade.finish_render()
