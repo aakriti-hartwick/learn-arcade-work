@@ -57,15 +57,28 @@ def draw_flower(x,y):
     #draw stem
     arcade.draw_line(x,y,x,y+70,arcade.csscolor.DARK_GREEN,7)
     arcade.draw_line(x+700, y, x+700, y + 90, arcade.csscolor.DARK_GREEN, 7)
+    arcade.draw_line(x+60, y+60, x+60,y+180,arcade.csscolor.DARK_GREEN,7)
+    arcade.draw_line(x+640, y+100, x+640,200,arcade.csscolor.DARK_GREEN,7)
+
 
     #draw petals
     arcade.draw_ellipse_filled(x,y+70,30,40,arcade.csscolor.MEDIUM_PURPLE,0,-1)
-    arcade.draw_ellipse_filled(x+20, y + 30, 30, 40, arcade.csscolor.DARK_GREEN, 60, -1)
     arcade.draw_ellipse_filled(x+700, y + 70, 30, 40, arcade.csscolor.HOTPINK, 0, -1)
-    arcade.draw_ellipse_filled(x + 720, y + 30, 30, 40, arcade.csscolor.DARK_GREEN, 60, -1)
-    arcade.draw_ellipse_filled(x + 680, y + 35, 30, 40, arcade.csscolor.DARK_GREEN, 60, -1)
     arcade.draw_ellipse_filled(x+720, y + 60, 30, 40, arcade.csscolor.HOTPINK, 60, -1)
     arcade.draw_ellipse_filled(x+680, y + 60, 30, 40, arcade.csscolor.HOTPINK, 120,-1)
+    arcade.draw_ellipse_filled(x + 60, y + 180, 40, 60, arcade.csscolor.RED, 0,-1)
+    arcade.draw_ellipse_filled(x + 640, y + 200, 40, 60, arcade.csscolor.YELLOW, 0, -1)
+
+    #draw leaf
+    arcade.draw_ellipse_filled(x + 20, y + 30, 30, 40, arcade.csscolor.DARK_GREEN, 60, -1)
+    arcade.draw_ellipse_filled(x + 720, y + 30, 30, 40, arcade.csscolor.DARK_GREEN, 60, -1)
+    arcade.draw_ellipse_filled(x + 680, y + 35, 30, 40, arcade.csscolor.DARK_GREEN, 60, -1)
+    arcade.draw_ellipse_filled(x + 40, y + 140, 30, 40, arcade.csscolor.DARK_GREEN, 120,-1)
+    arcade.draw_ellipse_filled(x + 80, y + 130, 30, 40, arcade.csscolor.DARK_GREEN, 60, -1)
+    arcade.draw_ellipse_filled(x + 660, y + 140, 30, 40, arcade.csscolor.DARK_GREEN,60,-1)
+
+
+
     
 def main():
     arcade.open_window(screen_width,screen_height,'lab 3')
