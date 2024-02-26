@@ -1,15 +1,9 @@
-"""
-This is my lab 3 project.
-"""
-# Concentration is the most powerful thing.
 import arcade
 
 screen_width = 800
 screen_height = 800
 
-import arcade
 
-screen_width = 750
 def draw_sun():
     #draw a sun
     arcade.draw_circle_filled(700,700, 40,arcade.csscolor.YELLOW)
@@ -60,7 +54,6 @@ def draw_mountain():
 def draw_flower(x,y):
     """"Draw a flower"""
 
-screen_height = 900
     #draw stem
     arcade.draw_line(x,y,x,y+70,arcade.csscolor.DARK_GREEN,7)
     arcade.draw_line(x+700, y, x+700, y + 90, arcade.csscolor.DARK_GREEN, 7)
@@ -73,9 +66,8 @@ screen_height = 900
     arcade.draw_ellipse_filled(x + 680, y + 35, 30, 40, arcade.csscolor.DARK_GREEN, 60, -1)
     arcade.draw_ellipse_filled(x+720, y + 60, 30, 40, arcade.csscolor.HOTPINK, 60, -1)
     arcade.draw_ellipse_filled(x+680, y + 60, 30, 40, arcade.csscolor.HOTPINK, 120,-1)
+    
 def main():
-    arcade.open_window(750 , 900)
-    arcade.set_background_color(arcade.color.HARLEQUIN)
     arcade.open_window(screen_width,screen_height,'lab 3')
     arcade.set_background_color(arcade.color.SKY_BLUE)
     arcade.start_render()
