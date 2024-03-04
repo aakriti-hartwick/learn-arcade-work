@@ -8,7 +8,7 @@ def main():
 
 # What we are going to do in the game
 
-    print('\nWelcome to camel')
+    print('\nWelcome to camel game.')
     print("You have stolen camel to make your way across the Mobi desert")
     print("The natives want their camel back and are chasing you down!")
     print("Survive your desert trek and out run the natives.\n")
