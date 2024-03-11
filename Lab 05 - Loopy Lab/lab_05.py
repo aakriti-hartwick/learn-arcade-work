@@ -50,7 +50,7 @@ def draw_section_4():
     for row in range(30):
         for column in range(30):
             x = (column * 10) + 905
-            y = (row * 10) + 5
+            y = 295 - (row * 10)
             if (column + row) % 2 and column % 2 == 0:
 
                 arcade.draw_rectangle_filled(x, y, 5, 5, arcade.color.WHITE)
