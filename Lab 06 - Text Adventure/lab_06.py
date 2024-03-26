@@ -13,7 +13,8 @@ class Room:
 
 def main():
     # Create an empty list
-    my_list =
+    my_list ={}
+
     # Creating a variables for room named my_list
 
     my_list = [0,1,2,3,4]
