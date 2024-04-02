@@ -1,98 +1,81 @@
-import random
+import arcade
+
+SCREEN_WIDTH = 640
+SCREEN_HEIGHT = 480
+MOVEMENT_SPEED = 3
+
+
+class Ball:
+    def __init__(self, position_x, position_y, change_x, change_y, radius, color):
+
+        # Take the parameters of the init function above,
+        # and create instance variables out of them.
+        self.position_x = position_x
+        self.position_y = position_y
+        self.change_x = change_x
+        self.change_y = change_y
+        self.radius = radius
+        self.color = color
+
+    def draw(self):
+        """ Draw the balls with the instance variables we have. """
+        arcade.draw_circle_filled(self.position_x,
+                                  self.position_y,
+                                  self.radius,
+                                  self.color)
+
+    def update(self):
+        # Move the ball
+        self.position_y += self.change_y
+        self.position_x += self.change_x
+
+
+class MyGame(arcade.Window):
+
+    def __init__(self, width, height, title):
+
+        # Call the parent class's init function
+        super().__init__(width, height, title)
+
+        # Make the mouse disappear when it is over the window.
+        # So we just see our object, not the pointer.
+        self.set_mouse_visible(False)
+
+        arcade.set_background_color(arcade.color.ASH_GREY)
+
+        # Create our ball
+        self.ball = Ball(50, 50, 0, 0, 15, arcade.color.AUBURN)
+
+    def on_draw(self):
+        """ Called whenever we need to draw the window. """
+        arcade.start_render()
+        self.ball.draw()
+
+    def update(self, delta_time):
+        self.ball.update()
+
+    def on_key_press(self, key, modifiers):
+        """ Called whenever the user presses a key. """
+        if key == arcade.key.LEFT:
+            self.ball.change_x = -MOVEMENT_SPEED
+        elif key == arcade.key.RIGHT:
+            self.ball.change_x = MOVEMENT_SPEED
+        elif key == arcade.key.UP:
+            self.ball.change_y = MOVEMENT_SPEED
+        elif key == arcade.key.DOWN:
+            self.ball.change_y = -MOVEMENT_SPEED
+
+    def on_key_release(self, key, modifiers):
+        """ Called whenever a user releases a key. """
+        if key == arcade.key.LEFT or key == arcade.key.RIGHT:
+            self.ball.change_x = 0
+        elif key == arcade.key.UP or key == arcade.key.DOWN:
+            self.ball.change_y = 0
+
 
 def main():
-
-    print('Welcome to camel')
-    print("You have stolen camel to make your way across the Mobi desert")
-    print("The natives want their camel back and are chasing you down! Survive your")
-    print("desert trek and out run the natives")
-
-    done = False
-    miles_travelled = 0
-    thirst = 0
-    camel_tiredness = 0
-    natives_distance = -20
-    water_left = 3
-
-    while not done:
-
-        print("A. Drink from your storage.")
-        print("B. Go with medium speed.")
-        print("C. Go with full speed")
-        print("D. Stop for night.")
-        print("E. Check status.")
-        print("F. Quit.\n")
-
-        user_choice = input("What is your choice? ")
-
-        if user_choice.upper() == 'F':
-            print("Game end.")
-            break
-
-        elif user_choice.upper() =='E':
-            print("\nDistance Travelled:" +str(miles_travelled))
-            print("You have " + str(water_left) + " drinks left.")
-            print("The natives are " +str(miles_travelled - natives_distance) + " miles behind you.\n")
-
-        elif user_choice.upper() == "D":
-            print("\nYou slept for the whole night.")
-            print("Your camel is satisfied.")
-            natives_distance= natives_distance + random.randrange(7,14)
-            print("The natives are " + str(miles_travelled - natives_distance) + " miles behind you.\n")
-
-        elif user_choice.upper() == "C":
-            thirst= thirst + 1
-            print("\nYour camel ran in full speed.")
-            miles_travelled = miles_travelled + random.randrange(10,20)
-            camel_tiredness = camel_tiredness + random.randrange(1,3)
-            natives_distance= natives_distance + random.randrange(7,14)
-            print("The natives are " + str(miles_travelled - natives_distance) + " miles behind you.\n")
-
-        elif user_choice.upper() == "B":
-            thirst= thirst + 1
-            print("\nYour camel ran in medium speed.")
-            miles_travelled = miles_travelled + random.randrange(5,12)
-            camel_tiredness = camel_tiredness + 1
-            natives_distance= natives_distance + random.randrange(7,14)
-            print("The natives are " + str(miles_travelled - natives_distance) + " miles behind you.\n")
-
-        elif user_choice.upper() == "A":
-            if water_left > 0:
-                thirst = 0
-                water_left = water_left - 1
-                print("\nWow! That hit the spot.\n")
-            else:
-                print("\nYou ran out of water.\n")
-
-        if thirst > 6:
-            print("Your camel died.")
-            done = True
-            break
-        elif thirst > 4:
-            print("Your camel is thirsty. Drink water!\n")
-
-            if camel_tiredness > 8:
-                print("Your camel died . He was tired . \n")
-                done = True
-                break
-
-            elif camel_tiredness > 5 :
-                print("Camel is getting tired . Take rest .\n")
-
-                if natives_distance >= miles_travelled:
-                    print("The natives caught you. Better luck next time.\n")
-                    done = True
-                    break
-                elif miles_travelled - natives_distance <= 15:
-                    print("Run faster!! The natives are getting closer.\n")
-
-                if miles_travelled >= 200:
-                    print("You crossed the desert. You won.\n")
-                    done = True
-                    break
-
-
-
+    window = MyGame(640, 480, "Drawing Example")
+    arcade.run()
 
 
 main()
