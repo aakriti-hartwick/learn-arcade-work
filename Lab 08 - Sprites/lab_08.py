@@ -2,7 +2,7 @@ import random
 import arcade
 
 # Constants
-SPRITE_SCALING_PLAYER = 0.4
+SPRITE_SCALING_PLAYER = 0.6
 SPRITE_SCALING_COIN = 0.2
 SPRITE_SCALING_BOMB = 0.5
 COIN_COUNT = 50
@@ -24,12 +24,21 @@ class Coin(arcade.Sprite):
         self.center_x = random.randrange(SCREEN_WIDTH)
 
     def update(self):
-        # Move the coin
-        self.center_y -= 1
-        # See if the coin has fallen off the bottom of the screen.
-        # If so, reset it.
-        if self.top < 0:
-            self.reset_pos()
+        self.center_x += self.change_x
+        self.center_y += self.change_y
+
+        # If we are out-of-bounds, then 'bounce'
+        if self.left < 0:
+            self.change_x *= -1
+
+        if self.right > SCREEN_WIDTH:
+            self.change_x *= -1
+
+        if self.bottom < 0:
+            self.change_y *= -1
+
+        if self.top > SCREEN_HEIGHT:
+            self.change_y *= -1
 
 
 class Bomb(arcade.Sprite):
@@ -74,7 +83,7 @@ class MyGame(arcade.Window):
         # Don't show the mouse cursor
         self.set_mouse_visible(False)
 
-        arcade.set_background_color(arcade.color.AMAZON)
+        arcade.set_background_color(arcade.color.PURPLE)
 
         # Flag to track game over
         self.game_over = False
@@ -90,7 +99,7 @@ class MyGame(arcade.Window):
         self.score = 0
 
         # Set up the player
-        self.player_sprite = arcade.Sprite(":resources:images/animated_characters/female_person/femalePerson_idle.png",
+        self.player_sprite = arcade.Sprite(":resources:images/animated_characters/female_adventurer/femaleAdventurer_walk0.png",
                                            SPRITE_SCALING_PLAYER)
         self.player_sprite.center_x = 50
         self.player_sprite.center_y = 50
@@ -101,6 +110,8 @@ class MyGame(arcade.Window):
             coin = Coin(":resources:images/items/coinGold.png", SPRITE_SCALING_COIN)
             coin.center_x = random.randrange(SCREEN_WIDTH)
             coin.center_y = random.randrange(SCREEN_HEIGHT)
+            coin.change_x = random.randrange(-3, 4)
+            coin.change_y = random.randrange(-3, 4)
             self.coin_sprite_list.append(coin)
 
         # Create the bombs
