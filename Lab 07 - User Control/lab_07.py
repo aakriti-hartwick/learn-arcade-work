@@ -1,79 +1,128 @@
-""" Lab 7 - User Control """
-
 import arcade
 
-# --- Constants ---
-SCREEN_WIDTH = 850
-SCREEN_HEIGHT = 850
+
+SCREEN_WIDTH = 1000
+SCREEN_HEIGHT = 800
+MOVEMENT_SPEED = 10
+
+
+class Star:
+    """A class representing an object controlled by the mouse."""
+
+    def __init__(self, position_x, position_y, color):
+        """Initialize the object."""
+        self.position_x = position_x
+        self.position_y = position_y
+        self.color = color
+        self.hit2_sound = arcade.load_sound(":resources:sounds/jump2.wav")
+
+    def draw_star(self):
+        """Draw the object."""
+        x = self.position_x
+        y = self.position_y
+        # Draw the object as a star shape
+        arcade.draw_line(x - 30, y, x + 30, y, arcade.csscolor.WHITE_SMOKE)
+        arcade.draw_line(x, y - 30, x, y + 30, arcade.csscolor.WHITE_SMOKE)
+        arcade.draw_line(x - 30, y - 24, x + 30, y + 24, arcade.csscolor.WHITE_SMOKE)
+        arcade.draw_line(x - 30, y + 24, x + 30, y - 24, arcade.csscolor.WHITE_SMOKE)
+
+    def update(self, x, y):
+        """Update the position of the object."""
+        self.position_x = x
+        self.position_y = y
+
+        if self.position_x <= 0 or self.position_x >= 999:
+            arcade.play_sound(self.hit2_sound)
+
+        if self.position_y <= 0 or self.position_y >= SCREEN_HEIGHT:
+            arcade.play_sound(self.hit2_sound)
+
+
+class Snowman:
+    def __init__(self, position_x, position_y, change_x, change_y, radius_head, radius_body, radius_bottom, color):
+        self.position_x = position_x
+        self.position_y = position_y
+        self.change_x = change_x
+        self.change_y = change_y
+        self.radius_head = radius_head
+        self.radius_body = radius_body
+        self.radius_bottom = radius_bottom
+        self.color = color
+        self.hit_sound = arcade.load_sound(":resources:sounds/coin1.wav")
+
+    def draw(self):
+        arcade.draw_circle_filled(self.position_x, self.position_y + 50,
+                                  self.radius_bottom, self.color)  # Bottom circle (body)
+        arcade.draw_circle_filled(self.position_x, self.position_y + 125,
+                                  self.radius_body, self.color)  # Middle circle (body)
+        arcade.draw_circle_filled(self.position_x, self.position_y + 180,
+                                  self.radius_head, self.color)  # Top circle (head)
+        arcade.draw_circle_filled(self.position_x - 10, self.position_y + 190, 5, arcade.color.BLACK)  # Left eye
+        arcade.draw_circle_filled(self.position_x + 10, self.position_y + 190, 5, arcade.color.BLACK)  # Right eye
+
+    def update(self):
+        self.position_x += self.change_x
+        self.position_y += self.change_y
+
+        # Ensure snowman stays within the screen boundaries
+        if self.position_x < self.radius_bottom:
+            self.position_x = self.radius_bottom
+            arcade.play_sound(self.hit_sound)
+
+        elif self.position_x > SCREEN_WIDTH - self.radius_bottom:
+            self.position_x = SCREEN_WIDTH - self.radius_bottom
+            arcade.play_sound(self.hit_sound)
+
+        if self.position_y < self.radius_bottom - 50:
+            self.position_y = self.radius_bottom - 50
+            arcade.play_sound(self.hit_sound)
+
+        elif self.position_y > SCREEN_HEIGHT - self.radius_head - 180:
+            self.position_y = SCREEN_HEIGHT - self.radius_head - 180
+            arcade.play_sound(self.hit_sound)
 
 
 class MyGame(arcade.Window):
-    """ Our Custom Window Class"""
 
-    def __init__(self):
-        """ Initializer """
-
-        # Call the parent class initializer
-        super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, "Lab 7 - User Control")
+    def __init__(self, width, height, title):
+        super().__init__(width, height, title)
+        self.set_mouse_visible(False)
+        arcade.set_background_color(arcade.color.BLACK)
+        self.snowman = Snowman(50, 50, 0, 0, 30, 40, 50, arcade.color.WHITE)
+        self.star = Star(200, 200, arcade.color.WHITE)
 
     def on_draw(self):
         arcade.start_render()
+        self.snowman.draw()
+        self.star.draw_star()
 
-        arcade.draw_lrtb_rectangle_filled(0, 849, 849, 0, arcade.csscolor.FLORAL_WHITE)
+    def update(self, delta_time):
+        self.snowman.update()
 
-        arcade.draw_rectangle_filled(300, 300, 180, 600, arcade.csscolor.ROSY_BROWN)
-        arcade.draw_rectangle_filled(75, 75, 60, 400, arcade.csscolor.BLACK)
+    def on_key_press(self, key, modifiers):
+        if key == arcade.key.LEFT:
+            self.snowman.change_x = -MOVEMENT_SPEED
+        elif key == arcade.key.RIGHT:
+            self.snowman.change_x = MOVEMENT_SPEED
+        elif key == arcade.key.UP:
+            self.snowman.change_y = MOVEMENT_SPEED
+        elif key == arcade.key.DOWN:
+            self.snowman.change_y = -MOVEMENT_SPEED
 
-        arcade.draw_circle_filled(75, 75, 18.75, arcade.csscolor.RED)
-        arcade.draw_circle_filled(75, 150, 18.75, arcade.csscolor.GREEN)
-        arcade.draw_circle_filled(75, 225, 18.75, arcade.csscolor.YELLOW)
+    def on_key_release(self, key, modifiers):
+        if key in [arcade.key.LEFT, arcade.key.RIGHT]:
+            self.snowman.change_x = 0
+        elif key in [arcade.key.UP, arcade.key.DOWN]:
+            self.snowman.change_y = 0
 
-        arcade.draw_rectangle_filled(700, 60, 45, 450, arcade.csscolor.SIENNA)
-
-        arcade.draw_circle_filled(700, 350, 100, arcade.csscolor.DARK_GREEN)
-        arcade.draw_rectangle_filled(500, 30, 40, 300, arcade.csscolor.SIENNA)
-
-        arcade.draw_rectangle_filled(300, 300, 50, 50, arcade.csscolor.BLACK)
-        arcade.draw_rectangle_filled(300, 400, 50, 50, arcade.csscolor.BLACK)
-        arcade.draw_rectangle_filled(300, 500, 50, 50, arcade.csscolor.BLACK)
-        arcade.draw_rectangle_filled(300, 200, 50, 50, arcade.csscolor.BLACK)
-        arcade.draw_rectangle_filled(300, 80, 60, 150, arcade.csscolor.PURPLE)
-        arcade.draw_rectangle_filled(300, 40, 30, 75, arcade.csscolor.WHITE)
-
-        arcade.draw_circle_filled(500, 250, 89, arcade.csscolor.DARK_GREEN)
-
-        arcade.draw_circle_filled(750, 750, 40, arcade.csscolor.SKY_BLUE)
-
-        arcade.draw_circle_filled(750, 790, 40, arcade.csscolor.SKY_BLUE)
-        arcade.draw_circle_filled(800, 830, 40, arcade.csscolor.SKY_BLUE)
-        arcade.draw_circle_filled(850, 850, 40, arcade.csscolor.SKY_BLUE)
-        arcade.draw_circle_filled(700, 800, 40, arcade.csscolor.SKY_BLUE)
-
-        arcade.draw_circle_filled(900, 800, 40, arcade.csscolor.SKY_BLUE)
-
-        arcade.draw_circle_filled(400, 800, 40, arcade.csscolor.SKY_BLUE)
-        arcade.draw_circle_filled(350, 780, 40, arcade.csscolor.SKY_BLUE)
-        arcade.draw_circle_filled(150, 830, 40, arcade.csscolor.SKY_BLUE)
-        arcade.draw_circle_filled(180, 825, 40, arcade.csscolor.SKY_BLUE)
-
-        # draw a sun
-        arcade.draw_circle_filled(800, 800, 40, arcade.csscolor.YELLOW)
-
-        arcade.finish_render()
+    def on_mouse_motion(self, x, y, dx, dy):
+        """Handle mouse motion events."""
+        self.star.update(x, y)
 
 
 def main():
-    window = MyGame()
+    MyGame(1000, 800, "Drawing Example")
     arcade.run()
 
 
 main()
-
-
-
-
-
-
-
-
-
