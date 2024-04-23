@@ -1,6 +1,7 @@
 import random
 import arcade
 from pyglet.math import Vec2
+# adding a comment
 
 SPRITE_SCALING_BOX = 0.5
 SPRITE_SCALING_COIN = 0.5
